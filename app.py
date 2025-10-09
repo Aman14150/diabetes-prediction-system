@@ -160,12 +160,16 @@ def predict():
         pred_idx = int(model.predict(scaled_input)[0])
         result = "Diabetic" if pred_idx == 1 else "Non-Diabetic"
 
+        # DB save only if cursor exists
         if cursor:
-            sql = """INSERT INTO patients 
-                     (name, gender, age, pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, dpf, prediction)
-                     VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-            cursor.execute(sql, (name, gender, data[7], data[0], data[1], data[2], data[3], data[4], data[5], data[6], result))
-            db.commit()
+            try:
+                sql = """INSERT INTO patients 
+                         (name, gender, age, pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, dpf, prediction)
+                         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+                cursor.execute(sql, (name, gender, data[7], data[0], data[1], data[2], data[3], data[4], data[5], data[6], result))
+                db.commit()
+            except Exception as db_err:
+                print("⚠️ Failed to save to DB:", db_err)
 
         probs = model.predict_proba(scaled_input)[0].tolist() if hasattr(model, "predict_proba") else None
         confidence = round(probs[pred_idx] * 100, 2) if probs else None
@@ -181,6 +185,7 @@ def predict():
 
     except Exception as e:
         return jsonify({'status': 'error', 'messages': [str(e)]})
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
