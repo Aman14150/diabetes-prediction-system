@@ -70,11 +70,10 @@ def home():
 
 @app.route('/patients')
 def patients():
+    if not cursor:
+        flash("⚠️ Access Denied, Please Contact 👨‍💼Admin", "danger")
+        return render_template('index.html', show_patients=False)
     try:
-        if not cursor:
-            flash("⚠️ Access Denied, Please Contact 👨‍💼Admin", "danger")
-            return render_template('index.html', show_patients=False)
-
         search = request.args.get('search', '')
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 5))
