@@ -30,8 +30,7 @@ Built for healthcare professionals to quickly assess patient risk and manage pat
 ---
 
 ## 🌐 Live Demo  
-🔗 **[https://diabetes-prediction-system-tbty.onrender.com](https://diabetes-prediction-system-tbty.onrender.com)**
----
+🔗 [https://diabetes-prediction-system-tbty.onrender.com]
 
 ## 💻 Run Instructions  
 ### 1️⃣ Clone the Repository  
