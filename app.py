@@ -70,43 +70,51 @@ def home():
 
 @app.route('/patients')
 def patients():
-    if not cursor:
+    try:
+        if not cursor:
+            flash("⚠️ Access Denied, Please Contact 👨‍💼Admin", "danger")
+            return render_template('index.html', show_patients=False)
+
+        search = request.args.get('search', '')
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 5))
+        offset = (page - 1) * per_page
+
+        query = "SELECT * FROM patients"
+        params = ()
+
+        if search:
+            query += " WHERE name LIKE %s OR prediction LIKE %s"
+            params = (f"%{search}%", f"%{search}%")
+
+        cursor.execute(f"SELECT COUNT(*) FROM ({query}) AS subquery", params)
+        total_count = cursor.fetchone()[0]
+
+        query += " ORDER BY id DESC LIMIT %s OFFSET %s"
+        params += (per_page, offset)
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+
+        total_pages = (total_count + per_page - 1) // per_page
+
+        return render_template(
+            'index.html',
+            patient_data=rows,
+            patient_columns=columns,
+            show_patients=True,
+            page=page,
+            per_page=per_page,
+            total_pages=total_pages,
+            search=search
+        )
+
+    except mysql.connector.Error as e:
+        # Catch any DB error and show friendly message
+        print("⚠️ DB error in /patients:", e)
         flash("⚠️ Access Denied, Please Contact 👨‍💼Admin", "danger")
         return render_template('index.html', show_patients=False)
 
-    search = request.args.get('search', '')
-    page = int(request.args.get('page', 1))
-    per_page = int(request.args.get('per_page', 5))
-    offset = (page - 1) * per_page
-
-    query = "SELECT * FROM patients"
-    params = ()
-
-    if search:
-        query += " WHERE name LIKE %s OR prediction LIKE %s"
-        params = (f"%{search}%", f"%{search}%")
-
-    cursor.execute(f"SELECT COUNT(*) FROM ({query}) AS subquery", params)
-    total_count = cursor.fetchone()[0]
-
-    query += " ORDER BY id DESC LIMIT %s OFFSET %s"
-    params += (per_page, offset)
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-    columns = [desc[0] for desc in cursor.description]
-
-    total_pages = (total_count + per_page - 1) // per_page
-
-    return render_template(
-        'index.html',
-        patient_data=rows,
-        patient_columns=columns,
-        show_patients=True,
-        page=page,
-        per_page=per_page,
-        total_pages=total_pages,
-        search=search
-    )
 
 @app.route('/export_csv')
 def export_csv():
