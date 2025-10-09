@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diabetes Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>🩺 Diabetes Prediction System</h2>
+            <ul>
+                <li><a href="/" class="{% if not show_patients %}active{% endif %}">Test</a></li>
+                <li><a href="/patients" class="{% if show_patients %}active{% endif %}">Patients</a></li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            {% if not show_patients %}
+            <!-- Test Form -->
+            <div class="card">
+                <h2>Diabetes</h2>
+                <div class="guidelines">
+                    <strong>Guidelines:</strong><br>
+                    - High Glucose (>140), BMI (>30) → likely “Diabetic”<br>
+                    - Normal Glucose (~100), BMI (~25), Age <35 → likely “Non-Diabetic”<br>
+                    - Fill all fields carefully for accurate prediction
+                </div>
+
+                <form id="diabetesForm" action="/predict" method="post">
+                    <input type="text" name="name" placeholder="Full Name" required>
+                    <input type="tel" name="mobile" placeholder="Mobile Number" required>
+                    <input type="number" name="Pregnancies" placeholder="Pregnancies" step="any" required>
+                    <input type="number" name="Glucose" placeholder="Glucose (mg/dL)" step="any" required>
+                    <input type="number" name="BloodPressure" placeholder="Blood Pressure (mmHg)" step="any" required>
+                    <input type="number" name="SkinThickness" placeholder="Skin Thickness (mm)" step="any" required>
+                    <input type="number" name="Insulin" placeholder="Insulin (µU/mL)" step="any" required>
+                    <input type="number" name="BMI" placeholder="BMI (kg/m²)" step="any" required>
+                    <input type="number" name="DiabetesPedigreeFunction" placeholder="Diabetes Pedigree Function" step="any" required>
+                    <input type="number" name="Age" placeholder="Age (years)" step="any" required>
+
+                    <div class="button-group">
+                        <button type="submit" id="predictBtn">Predict</button>
+                        <button type="button" id="clearBtn">Clear</button>
+                    </div>
+
+                    {% if prediction_text %}
+                    <div class="prediction">{{ prediction_text }}</div>
+                    {% else %}
+                    <div class="prediction">&nbsp;</div>
+                    {% endif %}
+                </form>
+            </div>
+
+            {% else %}
+            <!-- Patients Table -->
+            <div class="card">
+                <h2>Patients List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in patient_columns %}
+                            <th>{{ col|capitalize }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in patient_data %}
+                        <tr>
+                            {% for item in row %}
+                            <td>{{ item }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('clearBtn')?.addEventListener('click', function () {
+            document.getElementById('diabetesForm')?.reset();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.guidelines {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    font-size: 0.9rem;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 15px 0px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    text-align: center;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.button-group {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    flex: 1;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#predictBtn {
+    background-color: #007BFF;
+    color: white;
+}
+
+#predictBtn:hover {
+    background-color: #0056b3;
+}
+
+#clearBtn {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+#clearBtn:hover {
+    background-color: #bdbdbd;
+}
+
+.prediction {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+@media(max-width: 600px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    button {
+        margin: 5px 0;
+    }
+}

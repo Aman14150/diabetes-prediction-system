@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diabetes Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2 id="menu">🩺 Diabetes System</h2>
+            <ul>
+                <li>
+                    <a href="/" class="{% if not show_patients %}active{% endif %}">
+                        <i class="fa-solid fa-vials"></i> Test
+                    </a>
+                </li>
+                <li>
+                    <a href="/patients" class="{% if show_patients %}active{% endif %}">
+                        <i class="fa-solid fa-users"></i> Patients
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            {% if not show_patients %}
+            <!-- === Test Form === -->
+            <div class="card">
+                <h2>Predict Diabetes</h2>
+
+                <div class="guidelines">
+                    <strong>Guidelines:</strong><br>
+                    • Glucose >140, BMI >30 → Diabetic<br>
+                    • Normal Glucose (~100), BMI (~25), Age <35 → Non-Diabetic<br>
+                    • Fill all fields carefully for better accuracy
+                </div>
+
+                <form id="diabetesForm" action="/predict" method="post">
+                    <input type="text" name="name" placeholder="Full Name" required>
+                    <input type="tel" name="mobile" placeholder="Mobile Number" required>
+                    <input type="number" name="Pregnancies" placeholder="Pregnancies (0-10)" step="any" required>
+                    <input type="number" name="Glucose" placeholder="Glucose (80-180)" step="any" required>
+                    <input type="number" name="BloodPressure" placeholder="Blood Pressure (60-120)" step="any" required>
+                    <input type="number" name="SkinThickness" placeholder="Skin Thickness (10-50)" step="any" required>
+                    <input type="number" name="Insulin" placeholder="Insulin (15-276)" step="any" required>
+                    <input type="number" name="BMI" placeholder="BMI (18-35)" step="any" required>
+                    <input type="number" name="DiabetesPedigreeFunction"
+                        placeholder="Pedigree Function (0.1-2.5)" step="any" required>
+                    <input type="number" name="Age" placeholder="Age (20-80)" step="any" required>
+
+                    <div class="button-group">
+                        <button type="submit" id="predictBtn">Predict</button>
+                        <button type="button" id="clearBtn">Clear</button>
+                    </div>
+
+                    <div class="prediction">
+                        {% if prediction_text %}
+                            {{ prediction_text }}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+
+            {% else %}
+            <!-- === Patients Table === -->
+            <div class="card">
+                <h2>Patients List</h2>
+
+                <div class="table-controls">
+                    <form method="get" action="/patients" class="filter-form">
+                        <input type="text" name="search" placeholder="Search name/prediction..." value="{{ search }}">
+                        <button type="submit" class="button">Search</button>
+                        <a href="{{ url_for('export_csv') }}" class="button export">Export CSV</a>
+                        <select name="per_page" onchange="this.form.submit()">
+                            {% for n in [5,10,15,20] %}
+                            <option value="{{ n }}" {% if per_page==n %}selected{% endif %}>{{ n }} per page</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            {% for col in patient_columns[1:] %}
+                            <th>{{ col|capitalize }}</th>
+                            {% endfor %}
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in patient_data %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            {% for item in row[1:] %}
+                            <td>{{ item }}</td>
+                            {% endfor %}
+                            <td>
+                                <form action="{{ url_for('delete_patient', patient_id=row[0]) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="delete-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    {% if page > 1 %}
+                    <a href="{{ url_for('patients', page=page-1, per_page=per_page, search=search) }}">Prev</a>
+                    {% endif %}
+                    <span>Page {{ page }} of {{ total_pages }}</span>
+                    {% if page < total_pages %}
+                    <a href="{{ url_for('patients', page=page+1, per_page=per_page, search=search) }}">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('clearBtn')?.addEventListener('click', function () {
+            document.getElementById('diabetesForm')?.reset();
+        });
+    </script>
+</body>
+</html>

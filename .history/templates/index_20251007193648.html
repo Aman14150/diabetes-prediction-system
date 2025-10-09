@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diabetes Prediction Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Diabetes System</h2>
+            <ul>
+                <li id="testTab" class="active">Test</li>
+                <li id="patientsTab">Patients</li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Test Form -->
+            <div id="testContent" class="content active">
+                <div class="card">
+                    <h2>🩺 Diabetes Prediction</h2>
+                    <div class="guidelines">
+                        <strong>Guidelines:</strong><br>
+                        - High Glucose (>140), BMI (>30) → likely “Diabetic”<br>
+                        - Normal Glucose (~100), BMI (~25), Age <35 → likely “Non-Diabetic”<br>
+                        - Fill all fields carefully for accurate prediction
+                    </div>
+
+                    <form id="diabetesForm" action="/predict" method="post">
+                        <input type="text" name="name" placeholder="Full Name" required>
+                        <input type="tel" name="mobile" placeholder="Mobile Number" required>
+                        <input type="number" name="Pregnancies" placeholder="Pregnancies (e.g., 0-10)" step="any" required>
+                        <input type="number" name="Glucose" placeholder="Glucose (mg/dL, e.g., 80-180)" step="any" required>
+                        <input type="number" name="BloodPressure" placeholder="Blood Pressure (mmHg, e.g., 60-120)" step="any" required>
+                        <input type="number" name="SkinThickness" placeholder="Skin Thickness (mm, e.g., 10-50)" step="any" required>
+                        <input type="number" name="Insulin" placeholder="Insulin (µU/mL, e.g., 15-276)" step="any" required>
+                        <input type="number" name="BMI" placeholder="BMI (kg/m², e.g., 18-35)" step="any" required>
+                        <input type="number" name="DiabetesPedigreeFunction" placeholder="Diabetes Pedigree Function (e.g., 0.1-2.5)" step="any" required>
+                        <input type="number" name="Age" placeholder="Age (years, e.g., 20-80)" step="any" required>
+
+                        <div class="button-group">
+                            <button type="submit" id="predictBtn">Predict</button>
+                            <button type="button" id="clearBtn">Clear</button>
+                        </div>
+
+                        {% if prediction_text %}
+                        <div class="prediction">{{ prediction_text }}</div>
+                        {% else %}
+                        <div class="prediction">&nbsp;</div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+
+            <!-- Patients Table -->
+            <div id="patientsContent" class="content">
+                <div class="card">
+                    <h2>👥 Patients List</h2>
+                    {% if patient_data %}
+                    <table>
+                        <thead>
+                            <tr>
+                                {% for col in patient_columns %}
+                                <th>{{ col }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in patient_data %}
+                            <tr>
+                                {% for item in row %}
+                                <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>No patient data available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const testTab = document.getElementById('testTab');
+        const patientsTab = document.getElementById('patientsTab');
+        const testContent = document.getElementById('testContent');
+        const patientsContent = document.getElementById('patientsContent');
+
+        testTab.addEventListener('click', () => {
+            testTab.classList.add('active');
+            patientsTab.classList.remove('active');
+            testContent.classList.add('active');
+            patientsContent.classList.remove('active');
+        });
+
+        patientsTab.addEventListener('click', () => {
+            patientsTab.classList.add('active');
+            testTab.classList.remove('active');
+            patientsContent.classList.add('active');
+            testContent.classList.remove('active');
+        });
+
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            document.getElementById('diabetesForm').reset();
+        });
+    </script>
+</body>
+</html>

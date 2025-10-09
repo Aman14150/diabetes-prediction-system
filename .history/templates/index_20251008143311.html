@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Diabetes Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2 src>Diabetes Prediction System</h2>
+            <ul>
+                <li><a href="/" class="{% if not show_patients %}active{% endif %}">
+                        <i class="fa-solid fa-vials"></i> Test</a>
+                </li>
+                <li><a href="/patients" class="{% if show_patients %}active{% endif %}">
+                        <i class="fa-solid fa-users"></i> Patients</a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            {% if not show_patients %}
+            <!-- Test Form -->
+            <div class="card">
+                <h2>Predict Diabetes</h2>
+                <div class="guidelines">
+                    <strong>Guidelines:</strong><br>
+                    - High Glucose (>140), BMI (>30) → likely “Diabetic”<br>
+                    - Normal Glucose (~100), BMI (~25), Age <35 → likely “Non-Diabetic”<br>
+                        - Fill all fields carefully for accurate prediction
+                </div>
+
+                <form id="diabetesForm" action="{{ url_for('predict') }}" method="post">
+                    <div class="form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Full Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select id="gender" name="gender" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Age">Age (20-80):</label>
+                        <input type="number" id="Age" name="Age" placeholder="Age" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Pregnancies">Pregnancies (0-10):</label>
+                        <input type="number" id="Pregnancies" name="Pregnancies" placeholder="Pregnancies" step="any"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Glucose">Glucose (80-180 mg/dL):</label>
+                        <input type="number" id="Glucose" name="Glucose" placeholder="Glucose" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="BloodPressure">Blood Pressure (60-120 mmHg):</label>
+                        <input type="number" id="BloodPressure" name="BloodPressure" placeholder="Blood Pressure"
+                            step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SkinThickness">Skin Thickness (10-50 mm):</label>
+                        <input type="number" id="SkinThickness" name="SkinThickness" placeholder="Skin Thickness"
+                            step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Insulin">Insulin (15-276 mu U/ml):</label>
+                        <input type="number" id="Insulin" name="Insulin" placeholder="Insulin" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="BMI">BMI (18-35 kg/m²):</label>
+                        <input type="number" id="BMI" name="BMI" placeholder="BMI" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DiabetesPedigreeFunction">Diabetes Pedigree Function (0.1-2.5):</label>
+                        <input type="number" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction"
+                            placeholder="DPF" step="any" required>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" id="predictBtn">Predict</button>
+                        <button type="button" id="clearBtn">Clear</button>
+                    </div>
+                </form>
+
+                <div id="predictionResult"></div>
+
+                <div id="predictionPopup" class="prediction-popup">
+                    <span id="predictionEmoji"></span>
+                    <div>
+                        <div id="predictionText"></div>
+                        <div id="predictionTips"></div>
+                    </div>
+                    <button id="closePredictionBtn">&times;</button>
+                </div>
+
+            </div>
+
+            {% else %}
+            <!-- Patients Table -->
+            <div class="card">
+                <h2>Patients List</h2>
+                <div class="table-actions">
+                    <input type="text" id="searchInput" placeholder="Search name/prediction...">
+                    <a href="{{ url_for('export_csv') }}" class="button export">Export CSV</a>
+                </div>
+
+                <table id="patientsTable">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            {% for col in patient_columns[1:] %}
+                            <th>{{ col|capitalize }}</th>
+                            {% endfor %}
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in patient_data %}
+                        <tr>
+                            <td>{{ (page-1)*per_page + loop.index }}</td>
+                            {% for item in row[1:] %}
+                            <td
+                                class="{% if loop.last and item=='Diabetic' %}diabetic{% elif loop.last and item=='Non-Diabetic' %}non-diabetic{% endif %}">
+                                {{ item }}
+                            </td>
+                            {% endfor %}
+                            <td>
+                                <form class="delete-form" action="{{ url_for('delete_patient', patient_id=row[0]) }}"
+                                    method="post" style="display:inline;">
+                                    <button type="button" class="delete-btn"
+                                        onclick="showDeleteModal(this)">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="pagination-wrapper">
+                    <div class="pagination" id="pagination">
+                        {% if page > 1 %}
+                        <a href="{{ url_for('patients', page=page-1, per_page=per_page, search=search) }}">Prev</a>
+                        {% endif %}
+                        Page {{ page }} of {{ total_pages }}
+                        {% if page < total_pages %} <a
+                            href="{{ url_for('patients', page=page+1, per_page=per_page, search=search) }}">Next</a>
+                            {% endif %}
+                    </div>
+                    <select id="perPageSelect" onchange="changePerPage()">
+                        {% for n in [5,10,15,20] %}
+                        <option value="{{ n }}" {% if per_page==n %}selected{% endif %}>{{ n }} per page</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to delete this patient?</p>
+            <div class="modal-buttons">
+                <button id="confirmDeleteBtn">Yes</button>
+                <button onclick="closeModal()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- ✅ Flash auto-hide (keep this separate, after script.js) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                const flashes = document.querySelectorAll(".flash");
+                flashes.forEach(flash => {
+                    flash.style.transition = "opacity 0.5s ease";
+                    setTimeout(() => {
+                        flash.style.opacity = "0";
+                        setTimeout(() => flash.remove(), 500);
+                    }, 5000); // 5 sec delay
+                });
+            }, 500); // wait for DOM render
+        });
+    </script>
+
+</body>
+
+</html>

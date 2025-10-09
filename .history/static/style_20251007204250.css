@@ -1,0 +1,270 @@
+/* === Global Body & Fonts === */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg,#f0f4f8,#d9e2ec);
+}
+
+/* === Container & Layout === */
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* === Sidebar === */
+.sidebar {
+    width: 180px;              
+    background: linear-gradient(180deg, #1e3a8a, #2563eb);
+    color: white;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;       
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    flex: 1;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar ul li a.active, .sidebar ul li a:hover {
+    background: #3b82f6;
+    transform: translateX(5px);
+}
+
+/* === Content Area === */
+.content {
+     flex: 1;
+    margin-left: 180px;    
+    padding: 25px;
+    background: #f0f4f8;
+}
+
+/* === Cards === */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+}
+
+/* === Headings === */
+h2 {
+    text-align: center;
+    color: #000000;
+}
+
+/* === Guidelines Box === */
+.guidelines {
+    background-color: #e0f2fe;
+    color: #1e40af;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    text-align: left;
+}
+
+/* === Form Inputs === */
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 12px 0px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 5px rgba(59,130,246,0.5);
+}
+
+/* === Buttons === */
+.button-group {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    flex: 1;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+#predictBtn {
+    background-color: #3b82f6;
+    color: white;
+}
+
+#predictBtn:hover {
+    background-color: #1e40af;
+    transform: scale(1.03);
+}
+
+#clearBtn {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+#clearBtn:hover {
+    background-color: #bdbdbd;
+    transform: scale(1.03);
+}
+
+.button {
+    padding: 8px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background-color: #3b82f6;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: #1e40af;
+    transform: scale(1.05);
+}
+
+/* === Prediction Text === */
+.prediction {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3b82f6;
+}
+
+/* === Table Styling === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    transition: all 0.3s ease;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+th {
+    background: #3b82f6;
+    color: white;
+}
+
+tbody tr:hover {
+    background-color: #f1f5f9;
+    transform: scale(1.01);
+}
+
+/* === Delete Button === */
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+    transform: scale(1.05);
+}
+
+/* === Pagination Links === */
+.pagination a {
+    padding: 8px 12px;
+    margin: 2px;
+    text-decoration: none;
+    background: #3b82f6;
+    color: white;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.pagination a:hover {
+    background: #1e40af;
+    transform: scale(1.05);
+}
+
+/* === Export / Search Styling === */
+select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+select:hover {
+    border-color: #3b82f6;
+}
+
+input[type=text] {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+input[type=text]:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 5px rgba(59,130,246,0.5);
+}

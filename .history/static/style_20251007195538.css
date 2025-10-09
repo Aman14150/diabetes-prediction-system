@@ -1,0 +1,186 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg,#f0f4f8,#d9e2ec);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 220px;          
+    min-width: 250px; 
+    max-width: 250px;     
+    background: #1e3a8a;
+    color: white;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;       
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;       
+}
+
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    flex: 1;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.sidebar ul li a.active, .sidebar ul li a:hover {
+    background: #3b82f6;
+}
+
+.content {
+     flex: 1;
+    margin-left: 220px;    
+    padding: 25px;
+    background: #f0f4f8;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #111827;
+}
+
+.guidelines {
+    background-color: #e0f2fe;
+    color: #1e40af;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    text-align: center;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 5px rgba(59,130,246,0.5);
+}
+
+.button-group {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    flex: 1;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#predictBtn {
+    background-color: #3b82f6;
+    color: white;
+}
+
+#predictBtn:hover {
+    background-color: #1e40af;
+}
+
+#clearBtn {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+#clearBtn:hover {
+    background-color: #bdbdbd;
+}
+
+.prediction {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3b82f6;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background: #3b82f6;
+    color: white;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+}

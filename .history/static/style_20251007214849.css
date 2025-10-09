@@ -1,0 +1,217 @@
+/* === Body === */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+}
+
+/* === Layout === */
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* === Sidebar === */
+.sidebar {
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+    background: linear-gradient(180deg, #1e3a8a, #2563eb);
+    color: white;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar h2 {
+    text-align: center;
+    width: 100%;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar ul li a.active, .sidebar ul li a:hover {
+    background: #3b82f6;
+    transform: translateX(5px);
+}
+
+/* === Main Content === */
+.content {
+    flex: 1;
+    margin-left: 180px;
+    padding: 25px;
+    background: #f0f4f8;
+}
+
+/* === Card === */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    margin-bottom: 20px;
+}
+
+/* === Headings === */
+h2 {
+    text-align: center;
+    color: #1e293b;
+}
+
+/* === Guidelines === */
+.guidelines {
+    background: #e0f2fe;
+    color: #1e40af;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* === Form === */
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 5px rgba(59,130,246,0.4);
+    outline: none;
+}
+
+/* === Buttons === */
+.button-group {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+button, .button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+#predictBtn {
+    background: #3b82f6;
+    color: white;
+}
+
+#clearBtn {
+    background: #e5e7eb;
+}
+
+#predictBtn:hover { background: #1e40af; transform: scale(1.03); }
+#clearBtn:hover { background: #d1d5db; transform: scale(1.03); }
+
+.button { background: #3b82f6; color: white; }
+.button:hover { background: #1e40af; }
+
+/* === Table === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+th {
+    background: #3b82f6;
+    color: white;
+}
+
+tbody tr:hover {
+    background-color: #f1f5f9;
+    transform: scale(1.01);
+}
+
+/* === Delete Button === */
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+.delete-btn:hover { background: #b91c1c; transform: scale(1.05); }
+
+/* === Pagination === */
+.pagination {
+    text-align: center;
+    margin-top: 15px;
+}
+.pagination a {
+    background: #3b82f6;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 0 3px;
+    text-decoration: none;
+}
+.pagination a:hover {
+    background: #1e40af;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    .content {
+        margin-left: 0;
+        padding: 15px;
+    }
+    form {
+        grid-template-columns: 1fr;
+    }
+}
