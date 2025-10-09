@@ -166,4 +166,4 @@ Replace the old ones in your Flask directory to update predictions.
 
 ## 🧑‍💻 Developer
 👨‍💻 **Aman Rakhade**
-📧 [LinkedIn](https://linkedin.com/in/amanrakhade) | [GitHub](https://github.com/Aman14150)
+📧 [LinkedIn](www.linkedin.com/in/aman-rakhade-0a9488319) | [GitHub](https://github.com/Aman14150)
