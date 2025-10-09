@@ -71,7 +71,7 @@ def home():
 @app.route('/patients')
 def patients():
     if not cursor:
-        flash("⚠️ Database not connected. Showing frontend only.", "warning")
+        flash("⚠️ Access Denied, Please Contact 👨‍💼Admin", "danger")
         return render_template('index.html', show_patients=False)
 
     search = request.args.get('search', '')
