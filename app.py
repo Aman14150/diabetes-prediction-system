@@ -204,4 +204,10 @@ def predict():
         return jsonify({'status': 'error', 'messages': [str(e)]})
 
 if __name__ == '__main__':
+    cursor = get_cursor()
+    if cursor:
+        print("✅ Database connected successfully!")
+    else:
+        print("❌ Database connection failed!")
     app.run(debug=True, use_reloader=False)
+

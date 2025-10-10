@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
     <title>Diabetes Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -41,7 +41,7 @@
             {% if not show_patients %}
             <!-- Test Form -->
             <div class="card">
-                <h2><img src="{{ url_for('static', filename='assets/icon.png') }}" alt="Logo" width="40">
+                <h2><img src="{{ url_for('static', filename='assets/icon.png') }}" alt="pancreas">
                     Diabetes Prediction System</h2>
                 <div class="guidelines">
                     <strong>Guidelines:</strong><br>
@@ -120,7 +120,7 @@
 
                 <div id="predictionResult"></div>
                 <!-- Visualization Chart -->
-                <div class="chart-container" style="width: 100%; margin-top: 30px; display: none;" id="chartContainer">
+                <div class="chart-container" id="chartContainer">
                     <h3>Feature Importance Visualization</h3>
                     <canvas id="featureChart"></canvas>
                 </div>
@@ -228,7 +228,7 @@
                     setTimeout(() => {
                         flash.style.opacity = "0";
                         setTimeout(() => flash.remove(), 500);
-                    }, 5000); // 5 sec delay
+                    }, 5000); 
                 });
             }, 500); // wait for DOM render
         });

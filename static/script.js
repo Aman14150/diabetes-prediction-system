@@ -102,17 +102,54 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: "Feature Importance",
                     data: Object.values(featureData),
+                    backgroundColor: "rgba(54, 162, 235, 0.6)",
+                    borderColor: "rgba(54, 162, 235, 1)",
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false, 
                 plugins: {
                     legend: { display: false },
-                    title: { display: false }
+                    title: {
+                        display: true,
+                        font: { size: 16, weight: 'bold' },
+                    }
                 },
-                scales: { y: { beginAtZero: true } }
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Feature Names',
+                            font: { size: 14 },
+                            color: '#444'
+                        },
+                        ticks: {
+                            color: '#333',
+                            font: { size: 12 },
+                            autoSkip: false,
+                            maxRotation: 90,
+                            minRotation: 45
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Feature Importance Score (0 to 1)',
+                            font: { size: 12 },
+                            color: '#444'
+                        },
+                        ticks: {
+                            stepSize: 0.05,
+                            color: '#333',
+                            font: { size: 12 }
+                        }
+                    }
+                }
             }
+
         });
     }
 
@@ -130,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            if (predictBtn) predictBtn.disabled = true; // prevent double-click
+            if (predictBtn) predictBtn.disabled = true; 
 
             const formData = new FormData(form);
 
@@ -140,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (predictBtn) predictBtn.disabled = false; // enable again
+                    if (predictBtn) predictBtn.disabled = false; 
                     if (predictionDiv) predictionDiv.innerHTML = '';
 
                     if (data.status === 'success') {
