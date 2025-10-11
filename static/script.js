@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Feature Importance Score (0 to 1)',
+                            text: 'Normalized Feature Importance (Sum = 1)',
                             font: { size: 12 },
                             color: '#444'
                         },
